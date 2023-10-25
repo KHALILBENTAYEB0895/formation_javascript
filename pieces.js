@@ -1,31 +1,95 @@
-const reponse = await fetch("pieces-autos.json");
-const pieces = await reponse.json();
+// const reponse = await ;
+// const pieces = await reponse.json();
+const pieces = await fetch("pieces-autos.json").then(pieces=>pieces.json());
 
-const article = pieces[0];
 
-const imageElement = document.createElement("img");
-imageElement.src = article.image;
 
-const nomElement = document.createElement("h2");
-nomElement.innerText = article.nom;
 
-const prixElement = document.createElement("p");
-prixElement.innerText = `Prix: ${article.prix} € (${article.prix < 35 ? "€" : "€€€"})`;
 
-const categorieElement = document.createElement("p");
-categorieElement.innerText = article.categorie ?? "(aucune catégorie)";
+function genererPieces(pieces){
+    for (let i = 0 ; i < pieces.length ;i++){
 
-const descriptionElement = document.createElement("p");
-descriptionElement.innerText = article.descriptionElement ?? "pas de description pour le moment";
+        const pieceElement = document.createElement("article");
+    
+        const imageElement = document.createElement("img");
+        imageElement.src = pieces[i].image;
+        pieceElement.appendChild(imageElement);
+    
+        const nomElement = document.createElement("h2");
+        nomElement.innerText = pieces[i].nom;
+        pieceElement.appendChild(nomElement);
+    
+        const prixElement = document.createElement("p");
+        prixElement.innerText = `Prix: ${pieces[i].prix} € (${pieces[i].prix < 35 ? "€" : "€€€"})`;
+        pieceElement.appendChild(prixElement);
+    
+        const categorieElement = document.createElement("p");
+        categorieElement.innerText = pieces[i].categorie ?? "(aucune catégorie)";
+        pieceElement.appendChild(categorieElement);
+    
+        const descriptionElement = document.createElement("p");
+        descriptionElement.innerText = pieces[i].descriptionElement ?? "pas de description pour le moment";
+        pieceElement.appendChild(descriptionElement);
+    
+        const dispoElement  = document.createElement("p");
+        dispoElement.innerText = pieces[i].disponibilite == true ? "(En stock)" : "(repture de stock)";
+        pieceElement.appendChild(dispoElement);
+    
+        document.querySelector(".fiches").appendChild(pieceElement);
+    }
+}
 
-const dispoElement  = document.createElement("p");
-dispoElement.innerText = article.disponibilite == true ? "(En stock)" : "(repture de stock)";
+genererPieces(pieces);
 
-const sectionFiches = document.querySelector(".fiches");
-sectionFiches.appendChild(imageElement);
-sectionFiches.appendChild(nomElement);
-sectionFiches.appendChild(prixElement);
-sectionFiches.appendChild(categorieElement);
-sectionFiches.appendChild(descriptionElement);
-sectionFiches.appendChild(dispoElement);
+const boutonTrierCrois = document.querySelector(".btn-trier-crois")
+boutonTrierCrois.addEventListener("click",function(){
+    const piecesOrdonnees = Array.from(pieces);
+    piecesOrdonnees.sort(function(a,b){
+        return a.prix - b.prix;
+    });
+    document.querySelector(".fiches").innerHTML = '';
+    genererPieces(piecesOrdonnees);
+});
+const boutonTrierDecrois = document.querySelector(".btn-trier-decrois")
+boutonTrierDecrois.addEventListener("click",function(){
+    const piecesOrdonnees = Array.from(pieces);
+    piecesOrdonnees.sort(function(a,b){
+        return b.prix - a.prix;
+    });
+    document.querySelector(".fiches").innerHTML = '';
+    genererPieces(piecesOrdonnees);
+});
+
+const boutonFiltrer = document.querySelector(".btn-filtrer");
+boutonFiltrer.addEventListener("click",function(){
+    const piecesFiltrees = pieces.filter(function(piece){
+        return piece.disponibilite == true;
+    });
+    document.querySelector(".fiches").innerHTML = '';
+    genererPieces(piecesFiltrees);
+});
+
+
+const inputPrixMAx = document.querySelector("#prix-max");
+
+inputPrixMAx.addEventListener('input',function(){
+    const piecesFiltrees = pieces.filter(function(piece){
+        return piece.prix <= inputPrixMAx.value;
+    });
+    document.querySelector(".fiches").innerHTML = '';
+    genererPieces(piecesFiltrees);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 
