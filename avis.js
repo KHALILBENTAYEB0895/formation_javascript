@@ -13,7 +13,7 @@ export function ajoutListenersAvis() {
             const avisElement = document.createElement("p");
             for(let j = 0; j < avis.length; j++){
                 avisElement.innerHTML += `<b>${avis[j].utilisateur}:</b> ${avis[j].commentaire}<br>`;
-                
+                pieceElement.appendChild(avisElement);  
             }
             pieceElement.appendChild(avisElement);
         });
