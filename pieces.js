@@ -1,5 +1,5 @@
 import { ajoutListenersAvis } from "./avis.js";
-const pieces = await fetch("pieces-autos.json").then(pieces=>pieces.json());
+const pieces = await fetch("http://localhost:8081/pieces").then(pieces=>pieces.json());
 
 
 
