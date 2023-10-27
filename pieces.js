@@ -1,5 +1,4 @@
-// const reponse = await ;
-// const pieces = await reponse.json();
+import { ajoutListenersAvis } from "./avis.js";
 const pieces = await fetch("pieces-autos.json").then(pieces=>pieces.json());
 
 
@@ -35,10 +34,15 @@ function genererPieces(pieces){
         dispoElement.innerText = pieces[i].disponibilite == true ? "(En stock)" : "(repture de stock)";
         pieceElement.appendChild(dispoElement);
     
+        const avisBouton = document.createElement("button");
+        avisBouton.dataset.id = pieces[i].id;
+        avisBouton.textContent = "Afficher les avis";
+        pieceElement.appendChild(avisBouton);
+
         document.querySelector(".fiches").appendChild(pieceElement);
     }
+    ajoutListenersAvis();
 }
-
 genererPieces(pieces);
 
 const boutonTrierCrois = document.querySelector(".btn-trier-crois")
