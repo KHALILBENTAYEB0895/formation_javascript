@@ -1,9 +1,7 @@
-import { ajoutListenersAvis } from "./avis.js";
+import { ajoutListenersAvis,ajoutListenersEnvoyerAvis} from "./avis.js";
 const pieces = await fetch("http://localhost:8081/pieces").then(pieces=>pieces.json());
 
-
-
-
+ajoutListenersEnvoyerAvis();
 
 function genererPieces(pieces){
     for (let i = 0 ; i < pieces.length ;i++){
